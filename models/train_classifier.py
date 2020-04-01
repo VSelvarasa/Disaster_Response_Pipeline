@@ -82,6 +82,7 @@ def build_model():
         ('clf', MultiOutputClassifier(
             AdaBoostClassifier(
                 base_estimator=DecisionTreeClassifier(max_depth=1, class_weight='balanced'),learning_rate=0.3,n_estimators=200)
+            # Max_depth = 1 is used for preventing overfitting, to avoid tree growing very deep.
         ))
     ])
 
@@ -127,6 +128,8 @@ def save_model(model, model_filepath):
 
 def main():
     if len(sys.argv) == 3:
+        warnings.filterwarnings('ignore')
+        
         database_filepath, model_filepath = sys.argv[1:]
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
         X, y, category_names = load_data(database_filepath)
